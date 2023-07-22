@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
         cb(null, tempDir);
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        const { _id } = req.user;
+        cb(null, `avatar-${_id}`);
     },
 });
 

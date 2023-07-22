@@ -7,7 +7,7 @@ const updateAvatar = async (req, res) => {
         res.status(400);
         throw new Error("No image for new avatar");
     }
-    const avatarURL = await processImage(req.file, _id);
+    const avatarURL = await processImage(req.file);
     const result = await User.findByIdAndUpdate(_id, { avatarURL }, { new: true });
     res.json({
         avatarURL: result.avatarURL,
