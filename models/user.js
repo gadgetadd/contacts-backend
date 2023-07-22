@@ -4,12 +4,10 @@ const Joi = require("joi");
 
 const { handleMongoError, signToken, comparePassword, hashPassword } = require("../helpers");
 
-const subscriptionList = ["starter", "pro", "business"];
-
 const registerUserJoiSchema = Joi.object({
-    password: Joi.string().required(),
+    password: Joi.string().min(8).required(),
     email: Joi.string().email().required(),
-    subscription: Joi.string().valid(...subscriptionList),
+    name: Joi.string().required(),
 });
 
 const loginUserJoiSchema = Joi.object({
@@ -17,8 +15,10 @@ const loginUserJoiSchema = Joi.object({
     email: Joi.string().email().required(),
 });
 
-const subscriptionJoiSchema = Joi.object({
-    subscription: Joi.string().valid(...subscriptionList).required().error(new Error('missing field subscription')),
+const emailJoiSchema = Joi.object({
+    email: Joi.string().email().required().messages({
+        'any.required': 'missing required field email'
+    })
 });
 
 const userSchema = new Schema({
@@ -31,11 +31,19 @@ const userSchema = new Schema({
         required: [true, 'Email is required'],
         unique: true,
     },
-    subscription: {
+    name: {
         type: String,
-        enum: subscriptionList,
-        default: "starter"
+        required: [true, 'User name is required'],
     },
+    verify: {
+        type: Boolean,
+        default: false,
+    },
+    verificationToken: {
+        type: String,
+        required: [true, 'Verify token is required'],
+    },
+    avatarURL: String,
     token: String
 }, {
     versionKey: false
@@ -55,5 +63,5 @@ module.exports = {
     User,
     registerUserJoiSchema,
     loginUserJoiSchema,
-    subscriptionJoiSchema
+       emailJoiSchema
 };

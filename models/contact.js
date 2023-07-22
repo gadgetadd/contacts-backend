@@ -5,14 +5,17 @@ const Joi = require("joi");
 const { handleMongoError } = require('../helpers');
 
 const contactJoiSchema = Joi.object({
-  name: Joi.string().required().error(new Error('missing required name field')),
-  email: Joi.string().email(),
-  phone: Joi.string(),
+  name: Joi.string().required().messages({
+    'any.required': 'missing required name field'
+  }),
+  number: Joi.string(),
   favorite: Joi.boolean()
 });
 
 const favoriteJoiSchema = Joi.object({
-  favorite: Joi.boolean().required().error(new Error('missing field favorite')),
+  favorite: Joi.boolean().required().messages({
+    'any.required': 'missing field favorite'
+  })
 });
 
 const contactSchema = new Schema({
@@ -20,10 +23,7 @@ const contactSchema = new Schema({
     type: String,
     required: [true, 'Set name for contact'],
   },
-  email: {
-    type: String,
-  },
-  phone: {
+  number: {
     type: String,
   },
   favorite: {
@@ -35,7 +35,8 @@ const contactSchema = new Schema({
     ref: 'user',
   }
 }, {
-  versionKey: false
+  versionKey: false,
+  timeStamps: true
 });
 
 contactSchema.post("save", handleMongoError);
