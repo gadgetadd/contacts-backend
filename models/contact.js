@@ -36,8 +36,7 @@ const contactSchema = new Schema({
   }
 }, {
   versionKey: false,
-  timeStamps: true
-});
+ });
 
 contactSchema.post("save", handleMongoError);
 

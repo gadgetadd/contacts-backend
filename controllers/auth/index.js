@@ -8,13 +8,13 @@ const resendEmail = require('./resendEmail');
 
 
 module.exports = {
-    register,
-    login,
-    getCurrent,
-    logout,
-      updateAvatar,
-    verifyEmail,
-    resendEmail
+  register,
+  login,
+  getCurrent,
+  logout,
+  updateAvatar,
+  verifyEmail,
+  resendEmail
 };
 
 
