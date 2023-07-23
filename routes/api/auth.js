@@ -18,9 +18,11 @@ router.post("/logout", authMiddleware, asyncHandler(ctrl.logout));
 
 router.patch("/avatars", authMiddleware, upload.single("avatar"), asyncHandler(ctrl.updateAvatar));
 
-router.post("/verify", validateRequest(emailJoiSchema), asyncHandler(ctrl.resendEmail));
+router.post("/resend", validateRequest(emailJoiSchema), asyncHandler(ctrl.resendEmail));
 
-router.get("/verify/:verificationToken", asyncHandler(ctrl.verifyEmail));
+router.get("/verify/", asyncHandler(ctrl.verifyEmail));
+
+router.get("/check", asyncHandler(ctrl.check));
 
 
 module.exports = router;
