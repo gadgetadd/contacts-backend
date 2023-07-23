@@ -5,6 +5,7 @@ const hashPassword = require('./hashPassword');
 const processImage = require('./processImage');
 const sendMail = require('./sendMail'); 
 const uploadToCloud = require('./uploadToCloud'); 
+const generateEmail = require('./generateEmail'); 
 
 module.exports = {
     comparePassword,
@@ -13,5 +14,6 @@ module.exports = {
     hashPassword,
     processImage,
     sendMail,
-    uploadToCloud
+    uploadToCloud,
+    generateEmail
 };

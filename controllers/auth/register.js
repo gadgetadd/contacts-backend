@@ -1,8 +1,12 @@
 const gravatar = require('gravatar');
-const { nanoid } = require('nanoid');
+const { customAlphabet } = require('nanoid');
+
+const alphabet = '0123456789';
+const idLength = 8;
+const generateCustomID = customAlphabet(alphabet, idLength);
 
 const { User } = require('../../models/user');
-const { sendMail } = require('../../helpers');
+const { sendMail, generateEmail } = require('../../helpers');
 
 const register = async (req, res) => {
     const { email } = req.body;
@@ -12,14 +16,13 @@ const register = async (req, res) => {
         throw new Error("Email in use");
     };
     const avatarURL = gravatar.url(email, { s: '250' });
-    const verificationToken = nanoid();
+    const verificationToken = generateCustomID();
+    const html = generateEmail(verificationToken);
     const newUser = await User.create({ ...req.body, avatarURL, verificationToken });
     await sendMail({
         to: email,
-        subject: "Verify your email",
-        html: `<a target="_blank" href="${process.env.BASE_URL}/api/users/verify/${verificationToken}">
-        Click to verify
-        </a>`,
+        subject: "Phonebook - confirmation code",
+        html,
     })
     res.status(201).json({
         user: {
