@@ -2,6 +2,10 @@ const { User } = require('../../models/user');
 
 const verifyEmail = async (req, res) => {
     const { verificationToken } = req.body;
+    if (!verificationToken) {
+        res.status(404);
+        throw new Error("Token not found");
+    };
     const user = await User.findOne({ verificationToken });
     if (!user) {
         res.status(404);
