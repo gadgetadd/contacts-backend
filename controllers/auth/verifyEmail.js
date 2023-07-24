@@ -7,9 +7,15 @@ const verifyEmail = async (req, res) => {
         res.status(404);
         throw new Error("User not found");
     };
-    await User.findByIdAndUpdate(user._id, { verify: true, verificationToken: null });
+    const token = user.signToken();
+    await User.findByIdAndUpdate(user._id, { verify: true, verificationToken: null, token });
     res.json({
-        message: 'Verification successful'
+        token,
+        user: {
+            email: user.email,
+            name: user.name,
+            avatarURL: user.avatarURL
+        }
     })
 };
 
