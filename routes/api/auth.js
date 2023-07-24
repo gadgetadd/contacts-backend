@@ -20,7 +20,7 @@ router.patch("/avatars", authMiddleware, upload.single("avatar"), asyncHandler(c
 
 router.post("/resend", validateRequest(emailJoiSchema), asyncHandler(ctrl.resendEmail));
 
-router.get("/verify/", asyncHandler(ctrl.verifyEmail));
+router.post("/verify", asyncHandler(ctrl.verifyEmail));
 
 router.get("/check", asyncHandler(ctrl.check));
 
